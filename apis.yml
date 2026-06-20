@@ -3,7 +3,7 @@ name: Microsoft Entra ID
 description: >-
   Microsoft Entra ID (formerly Azure AD) is a cloud-based identity and access management service for authenticating and authorizing users and applications with OAuth2, OIDC, and SAML support.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Authentication
   - Identity Provider
