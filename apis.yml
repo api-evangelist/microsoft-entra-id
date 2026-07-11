@@ -27,6 +27,8 @@ apis:
       - type: GitHubRepository
         url: https://github.com/AzureAD
 common:
+  - type: OAuthScopes
+    url: scopes/microsoft-entra-id-scopes.yml
   - type: Website
     url: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   - type: Documentation
@@ -35,6 +37,8 @@ common:
     url: https://github.com/AzureAD
   - type: Integrations
     url: https://www.microsoft.com/en-us/marketplace
+  - url: https://www.microsoft.com/en-us/security/blog/product/microsoft-entra/feed/
+    type: Blog
 integrations:
   - name: Microsoft
   - name: Two people looking at a computer.

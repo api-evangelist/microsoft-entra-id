@@ -1,0 +1,50 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/microsoft-entra-id-openapi.yml
+schemes:
+- name: oauth2
+  source: openapi/microsoft-entra-id-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+    tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+  - flow: clientCredentials
+    tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+  description: Microsoft Entra ID OAuth 2.0 bearer token via Microsoft identity platform
+scopes:
+- scope: Application.ReadWrite.All
+  description: Read and write all applications
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/microsoft-entra-id-openapi.yml
+- scope: Directory.ReadWrite.All
+  description: Read and write directory data
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/microsoft-entra-id-openapi.yml
+- scope: Group.ReadWrite.All
+  description: Read and write all groups
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/microsoft-entra-id-openapi.yml
+- scope: User.Read
+  description: Sign in and read user profile
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/microsoft-entra-id-openapi.yml
+- scope: User.ReadWrite.All
+  description: Read and write all users' full profiles
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/microsoft-entra-id-openapi.yml
+- scope: https://graph.microsoft.com/.default
+  description: Microsoft Graph default scopes
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/microsoft-entra-id-openapi.yml
