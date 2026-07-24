@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Entra ID (Microsoft Graph) REST Applications API
+  description: 'REST API for managing Microsoft Entra ID (formerly Azure Active
+
+    Directory) identity objects via Microsoft Graph v1.0. Includes
+
+    operations on users, groups, applications, service principals, and
+
+    directory roles. Authentication uses OAuth 2.0 bearer tokens issued
+
+    by Microsoft Entra ID via the Microsoft identity platform endpoints.
+
+    '
+  version: v1.0
+  contact:
+    name: Kin Lane
+    email: kin@apievangelist.com
+  license:
+    name: Microsoft Terms of Use
+    url: https://www.microsoft.com/en-us/legal/terms-of-use
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph v1.0
+security:
+- oauth2: []
+tags:
+- name: Applications
+  description: Application registration management
+paths:
+  /applications:
+    get:
+      tags:
+      - Applications
+      summary: List applications
+      operationId: applications_list
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+      - Applications
+      summary: Create an application registration
+      operationId: applications_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+  /applications/{id}:
+    get:
+      tags:
+      - Applications
+      summary: Get an application
+      operationId: applications_get
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags:
+      - Applications
+      summary: Update an application
+      operationId: applications_update
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+      - Applications
+      summary: Delete an application
+      operationId: applications_delete
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: The id or userPrincipalName of the directory object
+      schema:
+        type: string
+  schemas:
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        appId:
+          type: string
+        displayName:
+          type: string
+        signInAudience:
+          type: string
+          enum:
+          - AzureADMyOrg
+          - AzureADMultipleOrgs
+          - AzureADandPersonalMicrosoftAccount
+          - PersonalMicrosoftAccount
+        web:
+          type: object
+          properties:
+            redirectUris:
+              type: array
+              items:
+                type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Microsoft Entra ID OAuth 2.0 bearer token via Microsoft identity platform
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            User.Read: Sign in and read user profile
+            User.ReadWrite.All: Read and write all users' full profiles
+            Group.ReadWrite.All: Read and write all groups
+            Directory.ReadWrite.All: Read and write directory data
+            Application.ReadWrite.All: Read and write all applications
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Microsoft Graph default scopes

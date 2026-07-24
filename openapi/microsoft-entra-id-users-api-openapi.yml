@@ -1,0 +1,206 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Entra ID (Microsoft Graph) REST Applications Users API
+  description: 'REST API for managing Microsoft Entra ID (formerly Azure Active
+
+    Directory) identity objects via Microsoft Graph v1.0. Includes
+
+    operations on users, groups, applications, service principals, and
+
+    directory roles. Authentication uses OAuth 2.0 bearer tokens issued
+
+    by Microsoft Entra ID via the Microsoft identity platform endpoints.
+
+    '
+  version: v1.0
+  contact:
+    name: Kin Lane
+    email: kin@apievangelist.com
+  license:
+    name: Microsoft Terms of Use
+    url: https://www.microsoft.com/en-us/legal/terms-of-use
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph v1.0
+security:
+- oauth2: []
+tags:
+- name: Users
+  description: User identity management
+paths:
+  /users:
+    get:
+      tags:
+      - Users
+      summary: List users
+      operationId: users_list
+      parameters:
+      - $ref: '#/components/parameters/select'
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/orderby'
+      - $ref: '#/components/parameters/consistencyLevel'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+    post:
+      tags:
+      - Users
+      summary: Create a user
+      operationId: users_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      tags:
+      - Users
+      summary: Get a user
+      operationId: users_get
+      parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/select'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      tags:
+      - Users
+      summary: Update a user
+      operationId: users_update
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+      - Users
+      summary: Delete a user
+      operationId: users_delete
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+components:
+  parameters:
+    consistencyLevel:
+      name: ConsistencyLevel
+      in: header
+      description: Use "eventual" for advanced queries with $count, $search, or $filter
+      schema:
+        type: string
+        enum:
+        - eventual
+    filter:
+      name: $filter
+      in: query
+      schema:
+        type: string
+    orderby:
+      name: $orderby
+      in: query
+      schema:
+        type: string
+    select:
+      name: $select
+      in: query
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      schema:
+        type: integer
+    id:
+      name: id
+      in: path
+      required: true
+      description: The id or userPrincipalName of the directory object
+      schema:
+        type: string
+  schemas:
+    UserCollection:
+      type: object
+      properties:
+        '@odata.context':
+          type: string
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        '@odata.nextLink':
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        userPrincipalName:
+          type: string
+        displayName:
+          type: string
+        givenName:
+          type: string
+        surname:
+          type: string
+        mail:
+          type: string
+        mailNickname:
+          type: string
+        jobTitle:
+          type: string
+        accountEnabled:
+          type: boolean
+        passwordProfile:
+          type: object
+          properties:
+            forceChangePasswordNextSignIn:
+              type: boolean
+            password:
+              type: string
+        usageLocation:
+          type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Microsoft Entra ID OAuth 2.0 bearer token via Microsoft identity platform
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            User.Read: Sign in and read user profile
+            User.ReadWrite.All: Read and write all users' full profiles
+            Group.ReadWrite.All: Read and write all groups
+            Directory.ReadWrite.All: Read and write directory data
+            Application.ReadWrite.All: Read and write all applications
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Microsoft Graph default scopes

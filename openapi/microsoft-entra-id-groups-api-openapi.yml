@@ -1,0 +1,207 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Entra ID (Microsoft Graph) REST Applications Groups API
+  description: 'REST API for managing Microsoft Entra ID (formerly Azure Active
+
+    Directory) identity objects via Microsoft Graph v1.0. Includes
+
+    operations on users, groups, applications, service principals, and
+
+    directory roles. Authentication uses OAuth 2.0 bearer tokens issued
+
+    by Microsoft Entra ID via the Microsoft identity platform endpoints.
+
+    '
+  version: v1.0
+  contact:
+    name: Kin Lane
+    email: kin@apievangelist.com
+  license:
+    name: Microsoft Terms of Use
+    url: https://www.microsoft.com/en-us/legal/terms-of-use
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph v1.0
+security:
+- oauth2: []
+tags:
+- name: Groups
+  description: Group management
+paths:
+  /groups:
+    get:
+      tags:
+      - Groups
+      summary: List groups
+      operationId: groups_list
+      parameters:
+      - $ref: '#/components/parameters/select'
+      - $ref: '#/components/parameters/filter'
+      - $ref: '#/components/parameters/top'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollection'
+    post:
+      tags:
+      - Groups
+      summary: Create a group
+      operationId: groups_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          description: Created
+  /groups/{id}:
+    get:
+      tags:
+      - Groups
+      summary: Get a group
+      operationId: groups_get
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+    patch:
+      tags:
+      - Groups
+      summary: Update a group
+      operationId: groups_update
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+      - Groups
+      summary: Delete a group
+      operationId: groups_delete
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+  /groups/{id}/members:
+    get:
+      tags:
+      - Groups
+      summary: List group members
+      operationId: groups_listMembers
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+  /groups/{id}/members/$ref:
+    post:
+      tags:
+      - Groups
+      summary: Add a member to a group
+      operationId: groups_addMember
+      parameters:
+      - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - '@odata.id'
+              properties:
+                '@odata.id':
+                  type: string
+                  example: https://graph.microsoft.com/v1.0/directoryObjects/{user-id}
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+        mailEnabled:
+          type: boolean
+        mailNickname:
+          type: string
+        securityEnabled:
+          type: boolean
+        groupTypes:
+          type: array
+          items:
+            type: string
+        visibility:
+          type: string
+    GroupCollection:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+  parameters:
+    filter:
+      name: $filter
+      in: query
+      schema:
+        type: string
+    select:
+      name: $select
+      in: query
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      schema:
+        type: integer
+    id:
+      name: id
+      in: path
+      required: true
+      description: The id or userPrincipalName of the directory object
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Microsoft Entra ID OAuth 2.0 bearer token via Microsoft identity platform
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            User.Read: Sign in and read user profile
+            User.ReadWrite.All: Read and write all users' full profiles
+            Group.ReadWrite.All: Read and write all groups
+            Directory.ReadWrite.All: Read and write directory data
+            Application.ReadWrite.All: Read and write all applications
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Microsoft Graph default scopes

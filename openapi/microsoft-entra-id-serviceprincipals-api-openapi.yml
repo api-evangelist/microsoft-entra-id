@@ -1,0 +1,101 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Entra ID (Microsoft Graph) REST Applications ServicePrincipals API
+  description: 'REST API for managing Microsoft Entra ID (formerly Azure Active
+
+    Directory) identity objects via Microsoft Graph v1.0. Includes
+
+    operations on users, groups, applications, service principals, and
+
+    directory roles. Authentication uses OAuth 2.0 bearer tokens issued
+
+    by Microsoft Entra ID via the Microsoft identity platform endpoints.
+
+    '
+  version: v1.0
+  contact:
+    name: Kin Lane
+    email: kin@apievangelist.com
+  license:
+    name: Microsoft Terms of Use
+    url: https://www.microsoft.com/en-us/legal/terms-of-use
+servers:
+- url: https://graph.microsoft.com/v1.0
+  description: Microsoft Graph v1.0
+security:
+- oauth2: []
+tags:
+- name: ServicePrincipals
+  description: Service principal management
+paths:
+  /servicePrincipals:
+    get:
+      tags:
+      - ServicePrincipals
+      summary: List service principals
+      operationId: servicePrincipals_list
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+      - ServicePrincipals
+      summary: Create a service principal
+      operationId: servicePrincipals_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Created
+  /servicePrincipals/{id}:
+    get:
+      tags:
+      - ServicePrincipals
+      summary: Get a service principal
+      operationId: servicePrincipals_get
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+      - ServicePrincipals
+      summary: Delete a service principal
+      operationId: servicePrincipals_delete
+      parameters:
+      - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: The id or userPrincipalName of the directory object
+      schema:
+        type: string
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Microsoft Entra ID OAuth 2.0 bearer token via Microsoft identity platform
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            User.Read: Sign in and read user profile
+            User.ReadWrite.All: Read and write all users' full profiles
+            Group.ReadWrite.All: Read and write all groups
+            Directory.ReadWrite.All: Read and write directory data
+            Application.ReadWrite.All: Read and write all applications
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Microsoft Graph default scopes
