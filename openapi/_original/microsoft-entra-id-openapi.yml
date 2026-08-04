@@ -1,0 +1,465 @@
+openapi: 3.1.0
+info:
+  title: Microsoft Entra ID (Microsoft Graph) REST API
+  description: |
+    REST API for managing Microsoft Entra ID (formerly Azure Active
+    Directory) identity objects via Microsoft Graph v1.0. Includes
+    operations on users, groups, applications, service principals, and
+    directory roles. Authentication uses OAuth 2.0 bearer tokens issued
+    by Microsoft Entra ID via the Microsoft identity platform endpoints.
+  version: "v1.0"
+  contact:
+    name: Kin Lane
+    email: kin@apievangelist.com
+  license:
+    name: Microsoft Terms of Use
+    url: https://www.microsoft.com/en-us/legal/terms-of-use
+servers:
+  - url: https://graph.microsoft.com/v1.0
+    description: Microsoft Graph v1.0
+security:
+  - oauth2: []
+tags:
+  - name: Users
+    description: User identity management
+  - name: Groups
+    description: Group management
+  - name: Applications
+    description: Application registration management
+  - name: ServicePrincipals
+    description: Service principal management
+  - name: DirectoryRoles
+    description: Directory role management
+paths:
+  /users:
+    get:
+      tags: [Users]
+      summary: List users
+      operationId: users_list
+      parameters:
+        - $ref: '#/components/parameters/select'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/top'
+        - $ref: '#/components/parameters/orderby'
+        - $ref: '#/components/parameters/consistencyLevel'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+    post:
+      tags: [Users]
+      summary: Create a user
+      operationId: users_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: Get a user
+      operationId: users_get
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/select'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      tags: [Users]
+      summary: Update a user
+      operationId: users_update
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags: [Users]
+      summary: Delete a user
+      operationId: users_delete
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+  /groups:
+    get:
+      tags: [Groups]
+      summary: List groups
+      operationId: groups_list
+      parameters:
+        - $ref: '#/components/parameters/select'
+        - $ref: '#/components/parameters/filter'
+        - $ref: '#/components/parameters/top'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupCollection'
+    post:
+      tags: [Groups]
+      summary: Create a group
+      operationId: groups_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          description: Created
+  /groups/{id}:
+    get:
+      tags: [Groups]
+      summary: Get a group
+      operationId: groups_get
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+    patch:
+      tags: [Groups]
+      summary: Update a group
+      operationId: groups_update
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags: [Groups]
+      summary: Delete a group
+      operationId: groups_delete
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+  /groups/{id}/members:
+    get:
+      tags: [Groups]
+      summary: List group members
+      operationId: groups_listMembers
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+  /groups/{id}/members/$ref:
+    post:
+      tags: [Groups]
+      summary: Add a member to a group
+      operationId: groups_addMember
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: ['@odata.id']
+              properties:
+                '@odata.id':
+                  type: string
+                  example: 'https://graph.microsoft.com/v1.0/directoryObjects/{user-id}'
+      responses:
+        '204':
+          description: No Content
+  /applications:
+    get:
+      tags: [Applications]
+      summary: List applications
+      operationId: applications_list
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [Applications]
+      summary: Create an application registration
+      operationId: applications_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+  /applications/{id}:
+    get:
+      tags: [Applications]
+      summary: Get an application
+      operationId: applications_get
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+    patch:
+      tags: [Applications]
+      summary: Update an application
+      operationId: applications_update
+      parameters:
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags: [Applications]
+      summary: Delete an application
+      operationId: applications_delete
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+  /servicePrincipals:
+    get:
+      tags: [ServicePrincipals]
+      summary: List service principals
+      operationId: servicePrincipals_list
+      responses:
+        '200':
+          description: OK
+    post:
+      tags: [ServicePrincipals]
+      summary: Create a service principal
+      operationId: servicePrincipals_create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Created
+  /servicePrincipals/{id}:
+    get:
+      tags: [ServicePrincipals]
+      summary: Get a service principal
+      operationId: servicePrincipals_get
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags: [ServicePrincipals]
+      summary: Delete a service principal
+      operationId: servicePrincipals_delete
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: No Content
+  /directoryRoles:
+    get:
+      tags: [DirectoryRoles]
+      summary: List activated directory roles
+      operationId: directoryRoles_list
+      responses:
+        '200':
+          description: OK
+  /directoryRoles/{id}/members:
+    get:
+      tags: [DirectoryRoles]
+      summary: List members of a directory role
+      operationId: directoryRoles_listMembers
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: OK
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: Microsoft Entra ID OAuth 2.0 bearer token via Microsoft identity platform
+      flows:
+        authorizationCode:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/v2.0/authorize
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            User.Read: Sign in and read user profile
+            User.ReadWrite.All: Read and write all users' full profiles
+            Group.ReadWrite.All: Read and write all groups
+            Directory.ReadWrite.All: Read and write directory data
+            Application.ReadWrite.All: Read and write all applications
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            https://graph.microsoft.com/.default: Microsoft Graph default scopes
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: The id or userPrincipalName of the directory object
+      schema:
+        type: string
+    select:
+      name: $select
+      in: query
+      schema:
+        type: string
+    filter:
+      name: $filter
+      in: query
+      schema:
+        type: string
+    top:
+      name: $top
+      in: query
+      schema:
+        type: integer
+    orderby:
+      name: $orderby
+      in: query
+      schema:
+        type: string
+    consistencyLevel:
+      name: ConsistencyLevel
+      in: header
+      description: Use "eventual" for advanced queries with $count, $search, or $filter
+      schema:
+        type: string
+        enum: [eventual]
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        userPrincipalName:
+          type: string
+        displayName:
+          type: string
+        givenName:
+          type: string
+        surname:
+          type: string
+        mail:
+          type: string
+        mailNickname:
+          type: string
+        jobTitle:
+          type: string
+        accountEnabled:
+          type: boolean
+        passwordProfile:
+          type: object
+          properties:
+            forceChangePasswordNextSignIn:
+              type: boolean
+            password:
+              type: string
+        usageLocation:
+          type: string
+    UserCollection:
+      type: object
+      properties:
+        '@odata.context':
+          type: string
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        '@odata.nextLink':
+          type: string
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+        mailEnabled:
+          type: boolean
+        mailNickname:
+          type: string
+        securityEnabled:
+          type: boolean
+        groupTypes:
+          type: array
+          items:
+            type: string
+        visibility:
+          type: string
+    GroupCollection:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        appId:
+          type: string
+        displayName:
+          type: string
+        signInAudience:
+          type: string
+          enum: [AzureADMyOrg, AzureADMultipleOrgs, AzureADandPersonalMicrosoftAccount, PersonalMicrosoftAccount]
+        web:
+          type: object
+          properties:
+            redirectUris:
+              type: array
+              items:
+                type: string

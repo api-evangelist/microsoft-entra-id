@@ -1,0 +1,22 @@
+{
+  "provider": "microsoft-entra-id",
+  "sources": [
+    "microsoft-entra-id-applications-api-openapi.yml",
+    "microsoft-entra-id-directoryroles-api-openapi.yml",
+    "microsoft-entra-id-groups-api-openapi.yml",
+    "microsoft-entra-id-serviceprincipals-api-openapi.yml",
+    "microsoft-entra-id-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "microsoft-entra-id-applications-api-openapi.yml",
+    "microsoft-entra-id-directoryroles-api-openapi.yml",
+    "microsoft-entra-id-groups-api-openapi.yml",
+    "microsoft-entra-id-serviceprincipals-api-openapi.yml",
+    "microsoft-entra-id-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
