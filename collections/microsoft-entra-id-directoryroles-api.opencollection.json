@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Microsoft Entra ID (Microsoft Graph) REST Applications DirectoryRoles API",
+    "version": "v1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DirectoryRoles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List activated directory roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/directoryRoles"
+          },
+          "docs": "List activated directory roles"
+        },
+        {
+          "info": {
+            "name": "List members of a directory role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/directoryRoles/:id/members",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The id or userPrincipalName of the directory object"
+              }
+            ]
+          },
+          "docs": "List members of a directory role"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
