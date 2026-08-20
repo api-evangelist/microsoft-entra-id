@@ -45,6 +45,8 @@ apis:
   description: Application registration management
   humanURL: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -54,6 +56,8 @@ apis:
   description: Directory role management
   humanURL: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   tags:
+  - Directory Roles
+  tags_raw:
   - DirectoryRoles
   properties:
   - type: OpenAPI
@@ -63,6 +67,8 @@ apis:
   description: Group management
   humanURL: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   tags:
+  - Group
+  tags_raw:
   - Groups
   properties:
   - type: OpenAPI
@@ -72,6 +78,8 @@ apis:
   description: Service principal management
   humanURL: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   tags:
+  - Service Principals
+  tags_raw:
   - ServicePrincipals
   properties:
   - type: OpenAPI
@@ -81,6 +89,8 @@ apis:
   description: User identity management
   humanURL: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
