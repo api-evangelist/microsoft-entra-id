@@ -67,7 +67,7 @@ apis:
   description: Directory role management
   humanURL: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   tags:
-  - DirectoryRoles
+  - Directory Roles
   tags_raw:
   - DirectoryRoles
   properties:
@@ -89,7 +89,7 @@ apis:
   description: Service principal management
   humanURL: https://www.microsoft.com/en-us/security/business/identity-access/microsoft-entra-id
   tags:
-  - ServicePrincipals
+  - Service Principals
   tags_raw:
   - ServicePrincipals
   properties:
